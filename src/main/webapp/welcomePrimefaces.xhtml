@@ -18,6 +18,7 @@
 
             <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
                 Header
+                <a id="btnLogout" href="#{request.contextPath}/logout" style="color:#fff">登　出</a>
             </p:layoutUnit>
 
             <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
@@ -38,21 +39,9 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="center">
-                <form action="j_security_check" method="post">
-                    <h:panelGrid>
-                        <h:panelGrid>
-                            <p:watermark for="j_username" value="使用者帳號"/>
-                            <p:inputText id="j_username" name="j_username" value="#{loginMBean.userId}"
-                                         label="Firstname" required="true"/>
-                            <p:watermark for="j_password" value="密碼"/>
-                            <p:password id="j_password" name="j_password" value="#{loginMBean.password}"
-                                        required="true" label="Surname"/>
-                        </h:panelGrid>
-                    </h:panelGrid>
-                    <div id="button" class="div-inline">
-                        <h:commandButton id="btnLogin" action="/j_security_check" ajax="false"/>
-                    </div>
-                </form>
+                welcome  #{loginMBean.userId}<br/>
+                welcome ,#{loginMBean.userIdByRequest} (By HttpServletRequest)<br/>
+                <h:link outcome="secret/secret" value="Enter into secert"/>
             </p:layoutUnit>
         </p:layout>
 

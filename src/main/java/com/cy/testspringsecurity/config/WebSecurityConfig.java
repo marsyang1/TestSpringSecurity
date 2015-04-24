@@ -26,7 +26,16 @@ public class WebSecurityConfig
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().formLogin()
-                .loginProcessingUrl("/j_security_check");
+                .loginProcessingUrl("/j_security_check").defaultSuccessUrl("/welcomePrimefaces.xhtml")
+                .and().logout().logoutSuccessUrl("/index.xhtml")
+                .and().authorizeRequests()
+                .antMatchers("/index*").anonymous()
+                .antMatchers("/css/**", "/img/**", "/js/**", "/resources/**",
+                        "/javax.faces.resource/**").permitAll()
+                .and().authorizeRequests()
+                .antMatchers("/secret/*.xhtml").hasAnyRole("ADMIN")
+                .antMatchers("/**/*.xhtml", "/**/*.html", "/**/*.jsf").fullyAuthenticated()
+        ;
     }
 
 

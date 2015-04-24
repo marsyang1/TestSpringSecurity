@@ -1,19 +1,32 @@
 package com.cy.testspringsecurity.view;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.omnifaces.util.Faces;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by mars on 2015/4/24.
  */
+@ManagedBean
+@RequestScoped
 public class LoginMBean {
 
-    @Getter
-    @Setter
-    private String userId;
+    public String getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            return authentication.getDetails().toString();
+        } else {
+            return "";
+        }
+    }
 
-    @Getter
-    @Setter
-    private String password;
+    public String getUserIdByRequest() {
+        HttpServletRequest request = Faces.getRequest();
+        return request.getUserPrincipal().getName();
+    }
 
 }
