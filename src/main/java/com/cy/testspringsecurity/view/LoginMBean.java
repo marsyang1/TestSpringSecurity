@@ -3,6 +3,7 @@ package com.cy.testspringsecurity.view;
 import org.omnifaces.util.Faces;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -18,7 +19,8 @@ public class LoginMBean {
     public String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.isAuthenticated()) {
-            return authentication.getDetails().toString();
+            User user = (User) authentication.getPrincipal();
+            return user.getUsername();
         } else {
             return "";
         }
