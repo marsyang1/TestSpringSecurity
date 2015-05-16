@@ -20,7 +20,7 @@ public class WebSecurityConfig
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("admin").password("admin").roles("ADMIN", "USER")
-                .and().withUser("user").password("admin").roles("USER");
+                .and().withUser("user").password("user").roles("USER");
     }
 
 

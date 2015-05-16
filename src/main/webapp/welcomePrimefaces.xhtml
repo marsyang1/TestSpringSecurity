@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+        >
 
 <f:view contentType="text/html">
     <h:head>
@@ -42,6 +44,20 @@
                 welcome  #{loginMBean.userId}<br/>
                 welcome ,#{loginMBean.userIdByRequest} (By HttpServletRequest)<br/>
                 <h:link outcome="secret/secret" value="Enter into secert"/>
+                <hr/>
+                <p:inputText value="#{accountController.}" />
+                <p:inputText value="" />
+
+                <pe:qrCode id="qrCodeElem"
+                           renderMethod="#{accountController.renderMethod}"
+                           renderMode="#{accountController.mode}"
+                           text="#{accountController.text}"
+                           size="#{accountController.size}"
+                           fillColor="#{accountController.fillColor}"
+                           fontName="Ubuntu"
+                           fontColor="#01A9DB"
+                           ecLevel="H"
+                           radius="0.5"/>
             </p:layoutUnit>
         </p:layout>
 
