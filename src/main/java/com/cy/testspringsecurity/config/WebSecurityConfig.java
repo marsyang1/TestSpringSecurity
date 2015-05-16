@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -18,9 +19,28 @@ public class WebSecurityConfig
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin").password("password").roles("ADMIN", "USER")
-                .and().withUser("user").password("password").roles("USER");
+                .withUser("admin").password("admin").roles("ADMIN", "USER")
+                .and().withUser("user").password("admin").roles("USER");
     }
+
+
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        webSecurity
+                .ignoring()
+                        // All of Spring Security will ignore the requests
+                .antMatchers("/resources/**")
+                .antMatchers("/javax.faces.resource/**")
+                .antMatchers("/css/**")
+                .antMatchers("/img/**")
+                .antMatchers("/images/**")
+                .antMatchers("/js/**")
+                .antMatchers("/template/**")
+                .antMatchers("/error/**")
+                .antMatchers("/webresource/**")
+        ;
+    }
+
 
 
     @Override
@@ -30,8 +50,6 @@ public class WebSecurityConfig
                 .and().logout().logoutSuccessUrl("/index.xhtml")
                 .and().authorizeRequests()
                 .antMatchers("/index*").anonymous()
-                .antMatchers("/css/**", "/img/**", "/js/**", "/resources/**",
-                        "/javax.faces.resource/**").permitAll()
                 .and().authorizeRequests()
                 .antMatchers("/secret/*.xhtml").hasAnyRole("ADMIN")
                 .antMatchers("/**/*.xhtml", "/**/*.html", "/**/*.jsf").fullyAuthenticated()
