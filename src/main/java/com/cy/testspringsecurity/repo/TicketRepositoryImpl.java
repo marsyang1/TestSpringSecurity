@@ -12,18 +12,18 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TicketRepositoryImpl implements TicketRepository {
 
-    private Cache<String, String> ticker = CacheBuilder.newBuilder()
+    private Cache<String, String> tickerPool = CacheBuilder.newBuilder()
             .concurrencyLevel(4)
             .expireAfterWrite(60, TimeUnit.SECONDS)
             .build();
 
     @Override
     public void addTickey(String ticket) {
-        ticker.put(ticket, ticket);
+        tickerPool.put(ticket, ticket);
     }
 
     @Override
-    public void removeTickey(String ticket) {
-        ticker.invalidate(ticket);
+    public boolean useTickey(String ticketkey) {
+        return !tickerPool.getIfPresent(ticketkey).isEmpty();
     }
 }

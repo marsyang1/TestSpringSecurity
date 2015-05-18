@@ -18,8 +18,7 @@ public class QRCodeTicketRepositoryHashImpl implements QRCodeTicketRepository {
     @Override
     public boolean useTicket(String name) {
         try {
-            pool.removeTickey(KeyFormatUtils.getQRcodeTickeyKey(name));
-            return true;
+            return pool.useTickey(KeyFormatUtils.getQRcodeTickeyKey(name));
         } catch (Exception e) {
             return false;
         }

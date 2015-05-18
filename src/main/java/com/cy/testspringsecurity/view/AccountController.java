@@ -2,6 +2,7 @@ package com.cy.testspringsecurity.view;
 
 import com.cy.testspringsecurity.domain.Account;
 import com.cy.testspringsecurity.repo.AccountRepository;
+import com.cy.testspringsecurity.repo.QRCodeTicketRepository;
 import com.cy.testspringsecurity.utils.ApplicationContextProvider;
 import com.cy.testspringsecurity.utils.PasswordUtils;
 import com.cy.testspringsecurity.utils.TOTPUtils;
@@ -25,6 +26,8 @@ import java.util.Date;
 public class AccountController {
 
     private AccountRepository acccountRepository = (AccountRepository) ApplicationContextProvider.getBean("accountRepositoryHashImpl");
+
+    private QRCodeTicketRepository qrCodeTicketRepository = (QRCodeTicketRepository) ApplicationContextProvider.getBean("QRCodeTicketRepositoryHashImpl");
 
     //    @Value("${qrcode.width}")
     private int qrcodeWidth = 400;
@@ -91,14 +94,13 @@ public class AccountController {
         acccountRepository.addAccount(account);
 
         text = getQRBarcodeURL(account.getName(), hostLabel, account.getSecret());
-
-//        qrCodeTicketRepository.createTicket(name);
+        qrCodeTicketRepository.createTicket(name);
         Messages.addGlobalInfo("Success");
     }
 
     public void verifyCode(String name, String password, long code) throws InvalidKeyException, NoSuchAlgorithmException {
         Account account = acccountRepository.findAccountByName(name);
-        if(account != null && checkPassword(account, password)){
+        if (account != null && checkPassword(account, password)) {
             Messages.addGlobalInfo("admin verify password Success");
         }
         if (account != null && checkPassword(account, password) && TOTPUtils.checkCode(account.getSecret(), code)) {
@@ -109,9 +111,9 @@ public class AccountController {
     }
 
     public void showQrcode() throws IllegalAccessException {
-//        if (!qrCodeTicketRepository.useTicket(name)) {
-//            throw new IllegalAccessException("no permission");
-//        }
+        if (!qrCodeTicketRepository.useTicket(name)) {
+            throw new IllegalAccessException("no permission");
+        }
         Account account = acccountRepository.findAccountByName(name);
         text = getQRBarcodeURL(account.getName(), hostLabel, account.getSecret());
     }

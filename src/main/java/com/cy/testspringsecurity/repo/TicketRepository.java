@@ -7,5 +7,5 @@ public interface TicketRepository {
 
     void addTickey(String ticket);
 
-    void removeTickey(String ticket);
+    boolean useTickey(String ticketkey);
 }
