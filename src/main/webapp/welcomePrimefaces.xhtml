@@ -45,19 +45,24 @@
                 welcome ,#{loginMBean.userIdByRequest} (By HttpServletRequest)<br/>
                 <h:link outcome="secret/secret" value="Enter into secert"/>
                 <hr/>
-                <p:inputText value="#{accountController.}" />
-                <p:inputText value="" />
-
-                <pe:qrCode id="qrCodeElem"
-                           renderMethod="#{accountController.renderMethod}"
-                           renderMode="#{accountController.mode}"
-                           text="#{accountController.text}"
-                           size="#{accountController.size}"
-                           fillColor="#{accountController.fillColor}"
-                           fontName="Ubuntu"
-                           fontColor="#01A9DB"
-                           ecLevel="H"
-                           radius="0.5"/>
+                <p:panelGrid id="panel1">
+                    <p:message/>
+                    <h:form>
+                        <p:inputText value="#{accountController.name}"/>
+                        <p:inputText value="#{accountController.password}"/>
+                        <p:commandButton action="#{accountController.create()}" update="panel1"/>
+                    </h:form>
+                    <pe:qrCode id="qrCodeElem"
+                               renderMethod="#{accountController.renderMethod}"
+                               renderMode="#{accountController.mode}"
+                               text="#{accountController.text}"
+                               size="#{accountController.size}"
+                               fillColor="#{accountController.fillColor}"
+                               fontName="Ubuntu"
+                               fontColor="#01A9DB"
+                               ecLevel="H"
+                               radius="0.5"/>
+                </p:panelGrid>
             </p:layoutUnit>
         </p:layout>
 

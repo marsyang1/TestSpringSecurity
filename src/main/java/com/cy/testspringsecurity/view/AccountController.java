@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyEditorSupport;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +40,7 @@ public class AccountController {
     private int qrcodeHeight = 400;
 
     @Value("${totp.hostLabel}")
-    private String hostLabel = "brandonc.me";
+    private String hostLabel = "cy.com";
 
     @Getter
     private String name;
@@ -92,7 +91,9 @@ public class AccountController {
         account.setCreated(new Date());
         acccountRepository.addAccount(account);
 
-        qrCodeTicketRepository.createTicket(name);
+        text = getQRBarcodeURL(account.getName(), hostLabel, account.getSecret());
+
+//        qrCodeTicketRepository.createTicket(name);
         Messages.addGlobalInfo("Success");
     }
 
@@ -105,11 +106,10 @@ public class AccountController {
         }
     }
 
-    @RequestMapping(value = "{name}/qrcode", method = RequestMethod.GET)
-    public void showQrcode(@PathVariable String name, HttpServletResponse response) throws IllegalAccessException {
-        if (!qrCodeTicketRepository.useTicket(name)) {
-            throw new IllegalAccessException("no permission");
-        }
+    public void showQrcode() throws IllegalAccessException {
+//        if (!qrCodeTicketRepository.useTicket(name)) {
+//            throw new IllegalAccessException("no permission");
+//        }
         Account account = acccountRepository.findAccountByName(name);
         text = getQRBarcodeURL(account.getName(), hostLabel, account.getSecret());
     }
