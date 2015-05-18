@@ -2,15 +2,13 @@ package com.cy.testspringsecurity.view;
 
 import com.cy.testspringsecurity.domain.Account;
 import com.cy.testspringsecurity.repo.AccountRepository;
-import com.cy.testspringsecurity.repo.QRCodeTicketRepository;
+import com.cy.testspringsecurity.utils.ApplicationContextProvider;
 import com.cy.testspringsecurity.utils.PasswordUtils;
 import com.cy.testspringsecurity.utils.TOTPUtils;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.omnifaces.util.Messages;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -26,31 +24,32 @@ import java.util.Date;
 @RequestScoped
 public class AccountController {
 
-    @Autowired
-    @Qualifier("accountRepositoryHashImpl")
-    private AccountRepository acccountRepository;
+    private AccountRepository acccountRepository = (AccountRepository) ApplicationContextProvider.getBean("accountRepositoryHashImpl");
 
-    @Autowired
-    private QRCodeTicketRepository qrCodeTicketRepository;
-
-    @Value("${qrcode.width}")
+    //    @Value("${qrcode.width}")
     private int qrcodeWidth = 400;
 
-    @Value("${qrcode.height}")
+    //    @Value("${qrcode.height}")
     private int qrcodeHeight = 400;
 
-    @Value("${totp.hostLabel}")
+    //    @Value("${totp.hostLabel}")
     private String hostLabel = "cy.com";
 
     @Getter
+    @Setter
     private String name;
+    @Setter
     @Getter
     private String password;
+
+    @Setter
+    @Getter
+    private String code;
 
     @Getter
     private String renderMethod = "canvas'";
     @Getter
-    private String text;
+    private String text = "";
     @Getter
     private int mode = 2;
     @Getter
@@ -99,7 +98,10 @@ public class AccountController {
 
     public void verifyCode(String name, String password, long code) throws InvalidKeyException, NoSuchAlgorithmException {
         Account account = acccountRepository.findAccountByName(name);
-        if (account != null && TOTPUtils.checkCode(account.getSecret(), code) && checkPassword(account, password)) {
+        if(account != null && checkPassword(account, password)){
+            Messages.addGlobalInfo("admin verify password Success");
+        }
+        if (account != null && checkPassword(account, password) && TOTPUtils.checkCode(account.getSecret(), code)) {
             Messages.addGlobalInfo("Success");
         } else {
             Messages.addGlobalError("Verification failed");

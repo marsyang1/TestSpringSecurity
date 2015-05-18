@@ -9,4 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("com.cy.testspringsecurity")
 public class AppConfig {
+
+
 }

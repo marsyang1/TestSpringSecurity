@@ -3,15 +3,23 @@ package com.cy.testspringsecurity.repo;
 import com.cy.testspringsecurity.domain.Account;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.Set;
 
+@Slf4j
 @Repository
 public class AccountRepositoryHashImpl implements AccountRepository {
 
     private Table<Long, String, Account> table = HashBasedTable.create();
+
+    @PostConstruct
+    void init(){
+      log.info("AccountRepositoryHashImpl ready");
+    }
 
     @Override
     public void addAccount(Account account) {

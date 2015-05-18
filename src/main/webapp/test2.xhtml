@@ -45,29 +45,26 @@
                 welcome ,#{loginMBean.userIdByRequest} (By HttpServletRequest)<br/>
                 <h:link outcome="secret/secret" value="Enter into secert"/>
                 <hr/>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
-                <p:panelGrid id="panel1">
+                verifyCode
+                <p:panelGrid id="panel2">
                     <h:form>
-                        <p:watermark for="j_username" value="使用者帳號"/>
-                        <p:inputText id="j_username" name="j_username" value="#{accountController.name}"
+                        <p:messages id="messages2" showDetail="true" autoUpdate="true" closable="true"/>
+                        <p:watermark for="j_username2" value="使用者帳號"/>
+                        <p:inputText id="j_username2" name="j_username" value="#{accountController.name}"
                                      label="Firstname" required="true"/>
                         <br/>
-                        <p:watermark for="j_password" value="密碼"/>
-                        <p:password id="j_password" name="j_password" value="#{accountController.password}"
+                        <p:watermark for="j_password2" value="密碼"/>
+                        <p:password id="j_password2" name="j_password" value="#{accountController.password}"
                                     required="true"
                                     label="Surname"/>
-                        <p:commandButton action="#{accountController.create()}" update=":panel1"/>
+                        <br/>
+                        <p:watermark for="j_authcode" value="authcode"/>
+                        <p:password id="j_authcode" name="j_authcode" value="#{accountController.code}"
+                                    required="true"
+                                    label="j_authcode"/>
+                        <p:commandButton
+                                action="#{accountController.verifyCode(accountController.name,accountController.password,accountController.code)}" />
                     </h:form>
-                    <pe:qrCode id="qrCodeElem"
-                               renderMethod="#{accountController.renderMethod}"
-                               renderMode="#{accountController.mode}"
-                               text="#{accountController.text}"
-                               size="#{accountController.size}"
-                               fillColor="#{accountController.fillColor}"
-                               fontName="Ubuntu"
-                               fontColor="#01A9DB"
-                               ecLevel="H"
-                               radius="0.5"/>
                 </p:panelGrid>
             </p:layoutUnit>
         </p:layout>
