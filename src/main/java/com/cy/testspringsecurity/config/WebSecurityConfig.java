@@ -50,17 +50,17 @@ public class WebSecurityConfig
         http
                 .csrf().disable()
                 .formLogin()
-                .loginProcessingUrl("/j_security_check")
+                .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/welcomePrimefaces.xhtml")
                 .and()
-                .logout().logoutSuccessUrl("/index.xhtml")
+                .logout().permitAll().logoutSuccessUrl("/index.xhtml")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/index*").anonymous()
-                .and().authorizeRequests()
-                .antMatchers("/secret/*.xhtml").hasAnyRole("ADMIN")
-                .antMatchers("/**/*.xhtml", "/**/*.html", "/**/*.jsf").fullyAuthenticated()
+                .antMatchers("/webservice*").permitAll()
+                .anyRequest().authenticated()
         ;
+
     }
 
 
