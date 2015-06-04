@@ -24,7 +24,7 @@ public class WebSecurityConfig
                 .and().withUser("mars").password("mars").roles("USER")
                 .and().withUser("eva").password("eva").roles("USER")
                 .and().withUser("ivy").password("ivy").roles("USER")
-                ;
+        ;
     }
 
 
@@ -47,10 +47,15 @@ public class WebSecurityConfig
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().formLogin()
-                .loginProcessingUrl("/j_security_check").defaultSuccessUrl("/welcomePrimefaces.xhtml")
-                .and().logout().logoutSuccessUrl("/index.xhtml")
-                .and().authorizeRequests()
+        http
+                .csrf().disable()
+                .formLogin()
+                .loginProcessingUrl("/j_security_check")
+                .defaultSuccessUrl("/welcomePrimefaces.xhtml")
+                .and()
+                .logout().logoutSuccessUrl("/index.xhtml")
+                .and()
+                .authorizeRequests()
                 .antMatchers("/index*").anonymous()
                 .and().authorizeRequests()
                 .antMatchers("/secret/*.xhtml").hasAnyRole("ADMIN")
